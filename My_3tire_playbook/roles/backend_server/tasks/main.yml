@@ -84,9 +84,10 @@
         regexp: "{{ item.regexp }}"
         replace: "{{ item.replace }}"
   with_items:
-        - { regexp: "'NAME': 'mysqldb',", replace: "'NAME': '{{ rds_db }}'," }
+        - { regexp: "'NAME': 'mysqldb',", replace: "'NAME': '{{ db_name }}'," }
         - { regexp: "'PASSWORD': 'admin12345',", replace: "'PASSWORD': '{{ db_password }}'," }
         - { regexp: "'HOST': 'mysqldb.ckz7bawd2dzf.ap-south-1.rds.amazonaws.com',", replace: "'HOST': '{{ db_host }}'," }
+        - { regexp: "'USER': 'admin',", replace: "'NAME': '{{ user_name }}'," }
 
 
 - name: running python migrate

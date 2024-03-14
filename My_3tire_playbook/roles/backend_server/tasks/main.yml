@@ -1,27 +1,17 @@
 ---
 - name: First update the packagers
-  apt:
-    update_cache: yes
-    force_apt_get: yes
-    cache_valid_time: 3600 # Set cache valid time to 1 hour (optional)
+  apt: update_cache=yes force_apt_get=yes
+
+- name: Remove dpkg lock file
+  command: sudo rm /var/lib/dpkg/lock-frontend
+  ignore_errors: yes
 
 - name: Install Python3 and pip
-  block:
-    - apt:
-        name:
-          - python3-pip
-          - python3-dev
-        state: present
-      register: apt_result
-      until: apt_result is success or apt_result is failed
-      retries: 50
-      delay: 30
-    - fail:
-        msg: "Failed to install packages"
-      when: apt_result is failed
-  rescue:
-    - debug:
-        msg: "Failed to install packages"
+  apt:
+      name:
+        - python3-pip
+        - python3-dev
+      state: present
 
 - name: Installing virtualenv using pip3
   pip:

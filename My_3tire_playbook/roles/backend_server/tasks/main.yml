@@ -16,13 +16,19 @@
   pause:
     minutes: 2
 
+- name: Clean package cache if lock issue persists
+  command: sudo apt clean
+  ignore_errors: yes
+  when: >
+    "'E: Could not get lock' in ansible_run_result.stderr"
+
 - name: Install Python3 and pip
   apt:
       name:
         - python3-pip
         - python3-dev
       state: present
-  retries: 3
+  retries: 5
   delay: 10 # seconds
 
 - name: Installing virtualenv using pip3
